@@ -34,6 +34,7 @@ async function greyFilter() {
 
 async function sobelFilter() {
   let image = await Image.load(document.getElementById('color').src);
+  image = image.grey();
   let im = image.sobelFilter();
   document.getElementById('result').src = im.toDataURL();
 }
