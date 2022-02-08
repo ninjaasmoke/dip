@@ -1,13 +1,130 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --bg: black;
+  --bgalt: #040608;
+  --color: #d0d0d0;
+  --border: #d0d0d044;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: var(--bg);
+  color: var(--color);
+  font-family: 'Product Sans', sans-serif;
+}
+
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 20px;
+  background-color: var(--bgalt);
+  color: var(--color);
+}
+
+main {
+  padding: 20px;
+
+}
+
+input[type='text'] {
+  margin: 0 20px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  outline: none;
+  color: var(--color);
+  font-family: 'Product Sans', sans-serif;
+  background-color: var(--bgalt);
+}
+
+button {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  outline: none;
+  color: var(--color);
+  font-family: 'Product Sans', sans-serif;
+  background-color: var(--bgalt);
+  cursor: pointer;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+section {  
+  border-radius: 4px;
+  margin: 20px 0;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+
+img {
+  border-radius: 4px;
+  margin-right: 20px;
+
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  max-height: 400px;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+
+.filters {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: var(--bg);
+  color: var(--color);
+  padding: 20px;
+
+  flex-wrap: wrap;
+}
+
+.filterName {
+  margin-right: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  padding: 2px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.selected {
+  color: var(--bg);
+  background-color: var(--color);
+}
+
+footer {
+  width: 100%;
+  padding: 20px;
+  background-color: var(--bgalt);
+  color: var(--color);
+}
+
+a {
+  color: #FD4D4D;
+  color: gray;
+  text-decoration: none;
 }
