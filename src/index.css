@@ -10,6 +10,7 @@
   margin: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  font-family: 'Product Sans', sans-serif;
 }
 
 html,
@@ -140,3 +141,4 @@ a {
     margin: 0 0 20px;
   }
 }
+@import url('http://fonts.cdnfonts.com/css/product-sans');

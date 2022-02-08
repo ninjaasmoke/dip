@@ -119,7 +119,6 @@ function App() {
 
   return (
     <div className='container'>
-    <link href="http://fonts.cdnfonts.com/css/product-sans" rel="stylesheet"></link>
       <nav>
         <h3>
           Digital Image Processing
