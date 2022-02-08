@@ -99,8 +99,9 @@ map.set('Gaussian Blur', gaussianFilter);
 map.set('Canny Edge', cannyEdgeDetection);
 map.set('Invert', invert);
 
-function applyFilter(filter) {
-  map.get(filter)();
+async function applyFilter(filter) {
+  await map.get(filter)();
+  window.scrollTo(0, document.body.scrollHeight);
 }
 
 function App() {
@@ -118,6 +119,7 @@ function App() {
 
   return (
     <div className='container'>
+    <link href="http://fonts.cdnfonts.com/css/product-sans" rel="stylesheet"></link>
       <nav>
         <h3>
           Digital Image Processing
