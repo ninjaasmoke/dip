@@ -135,7 +135,7 @@ async function applyFilter(filter, setState) {
 
 function App() {
 
-  const [imgUrl, setImgUrl] = useState("https://www.lactame.com/github/image-js/image-js/3073b80c7d626196cb669f9d617f491a8338ca66/test/img/taxi/original.jpeg");
+  const [imgUrl, setImgUrl] = useState("https://images.unsplash.com/photo-1541535650810-10d26f5c2ab3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=100");
 
   const [selectedFilter, setSelectedFilter] = useState(filterNames[0]);
   const [rawData, setRawData] = useState([]);
