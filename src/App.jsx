@@ -143,19 +143,21 @@ map.set('Invert', invert);
 map.set('Black Hat', blackHat);
 map.set('Top Hat', topHat);
 
-async function applyFilter(filter, setState) {
+async function applyFilter(filter, setState, scroll = true) {
   setState(States[0]);
   try {
     map.get(filter)().then(() => {
-      var element = document.getElementById('main');
-      var headerOffset = 40;
-      var elementPosition = element.getBoundingClientRect().top;
-      var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-    
-      window.scrollTo({
-           top: offsetPosition,
-           behavior: "smooth"
-      });
+      if (scroll) {
+        var element = document.getElementById('main');
+        var headerOffset = 40;
+        var elementPosition = element.getBoundingClientRect().top;
+        var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
       setState(States[1]);
     })
   } catch (e) {
@@ -176,7 +178,7 @@ function App() {
   const inputRef = useRef("");
 
   useEffect(() => {
-    applyFilter(selectedFilter, setState);
+    applyFilter(selectedFilter, setState, false);
   }, []);
 
   const [scrollDir, setScrollDir] = useState("scrolling down");
