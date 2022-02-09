@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useState, useRef } from 'react';
 import './App.css';
 import Image from 'image-js';
 import Loader from './Loader';
@@ -25,10 +25,14 @@ const filterNames = [
   'Region of Interest (Yellow)',
   'Blur',
   'Gaussian Blur',
+];
+
+const edgeDetectors = [
+  'Black Hat',
   'Sobel',
   'Sobel Grey',
   'Canny Edge',
-];
+]
 
 async function greyFilter() {
   let image = await Image.load(document.getElementById('color').src);
@@ -108,6 +112,13 @@ async function getHistogramData(imgId) {
   }
 }
 
+async function blackHat() {
+  let image = await Image.load(document.getElementById('color').src);
+  image = image.grey();
+  let im = image.blackHat();
+  document.getElementById('result').src = im.toDataURL();
+}
+
 const map = new Map();
 map.set('Grey Scale', greyFilter);
 map.set('Sobel', sobelFilter);
@@ -119,6 +130,7 @@ map.set('Blur', blurFilter);
 map.set('Gaussian Blur', gaussianFilter);
 map.set('Canny Edge', cannyEdgeDetection);
 map.set('Invert', invert);
+map.set('Black Hat', blackHat);
 
 async function applyFilter(filter, setState) {
   setState(States[0]);
@@ -156,20 +168,14 @@ function App() {
         </h3>
       </nav>
 
-      <div className="filters">
-        {filterNames.map(filterName => (
-          <span
-            key={filterName}
-            className={selectedFilter == filterName ? "filterName selected" : "filterName"}
-            onClick={async () => {
-              setSelectedFilter(filterName);
-              await applyFilter(filterName, setState);
-            }}
-          >
-            {filterName}
-          </span>
-        ))}
-      </div>
+      <>
+        {
+          OptionNames(filterNames, selectedFilter, setSelectedFilter, setState, "Filters")
+        }
+        {
+          OptionNames(edgeDetectors, selectedFilter, setSelectedFilter, setState, "Edge Detectors")
+        }
+      </>
 
       <div className='inputs'>
         <input type="text" id="newurl" placeholder='enter new image url' ref={inputRef} />
@@ -212,3 +218,24 @@ function App() {
 }
 
 export default App;
+
+
+function OptionNames(names, selectedFilter, setSelectedFilter, setState, title) {
+  return (
+    <div className="filters">
+      {title && <h4 className='filter-title'>{title}</h4>}
+      {names.map(filterName => (
+        <span
+          key={filterName}
+          className={selectedFilter == filterName ? "filterName selected" : "filterName"}
+          onClick={async () => {
+            setSelectedFilter(filterName);
+            await applyFilter(filterName, setState);
+          }}
+        >
+          {filterName}
+        </span>
+      ))}
+    </div>
+  );
+}

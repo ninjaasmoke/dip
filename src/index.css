@@ -106,9 +106,15 @@ img {
   align-items: center;
   background-color: var(--bg);
   color: var(--color);
-  padding: 20px;
+  padding: 0 20px;
 
   flex-wrap: wrap;
+}
+
+.filter-title {
+  padding-right: 20px;
+  color: var(--border);
+  user-select: none;
 }
 
 .filterName {
@@ -123,6 +129,10 @@ img {
 .selected {
   color: var(--bg);
   background-color: var(--color);
+}
+
+.filterName:hover {
+  box-shadow: 0 0 12px 2px var(--border);
 }
 
 .error {
