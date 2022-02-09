@@ -181,7 +181,7 @@ function App() {
     applyFilter(selectedFilter, setState, false);
   }, []);
 
-  const [scrollDir, setScrollDir] = useState("scrolling down");
+  const [scrollDir, setScrollDir] = useState("");
 
   useEffect(() => {
     const threshold = 60;
