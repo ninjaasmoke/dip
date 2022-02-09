@@ -1,7 +1,9 @@
-import React, { useLayoutEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import Image from 'image-js';
 import Loader from './Loader';
+import { info } from './data/info';
+import { ReactComponent as Up } from './icons/up.svg';
 
 const States = ["loading", "default", "error"];
 
@@ -29,6 +31,7 @@ const filterNames = [
 
 const edgeDetectors = [
   'Black Hat',
+  'Top Hat',
   'Sobel',
   'Sobel Grey',
   'Canny Edge',
@@ -112,6 +115,13 @@ async function getHistogramData(imgId) {
   }
 }
 
+async function topHat() {
+  let image = await Image.load(document.getElementById('color').src);
+  image = image.grey();
+  let im = image.topHat();
+  document.getElementById('result').src = im.toDataURL();
+}
+
 async function blackHat() {
   let image = await Image.load(document.getElementById('color').src);
   image = image.grey();
@@ -131,13 +141,23 @@ map.set('Gaussian Blur', gaussianFilter);
 map.set('Canny Edge', cannyEdgeDetection);
 map.set('Invert', invert);
 map.set('Black Hat', blackHat);
+map.set('Top Hat', topHat);
 
 async function applyFilter(filter, setState) {
   setState(States[0]);
   try {
-    await map.get(filter)();
-    window.scrollTo(0, document.body.scrollHeight);
-    setState(States[1]);
+    map.get(filter)().then(() => {
+      var element = document.getElementById('main');
+      var headerOffset = 40;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    
+      window.scrollTo({
+           top: offsetPosition,
+           behavior: "smooth"
+      });
+      setState(States[1]);
+    })
   } catch (e) {
     console.log(e);
     setState(States[2]);
@@ -155,18 +175,55 @@ function App() {
 
   const inputRef = useRef("");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     applyFilter(selectedFilter, setState);
   }, []);
 
+  const [scrollDir, setScrollDir] = useState("scrolling down");
+
+  useEffect(() => {
+    const threshold = 60;
+    let lastScrollY = window.pageYOffset;
+    let ticking = false;
+
+    const updateScrollDir = () => {
+      const scrollY = window.pageYOffset;
+
+      if (Math.abs(scrollY - lastScrollY) < threshold) {
+        ticking = false;
+        return;
+      }
+      setScrollDir(scrollY > lastScrollY ? "scrolling down" : "scrolling up");
+      lastScrollY = scrollY > 0 ? scrollY : 0;
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollDir);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scrollDir]);
+
 
   return (
-    <div className='container'>
+    <div className='container' id="home">
       <nav>
         <h3>
           Digital Image Processing
         </h3>
       </nav>
+
+      {
+        scrollDir === "scrolling down" && <div className="slide-nav">
+          Digital Image Processing
+        </div>
+      }
 
       <>
         {
@@ -182,8 +239,8 @@ function App() {
         <button onClick={() => {
           if (isValidHttpUrl(inputRef.current.value)) {
             setImgUrl(inputRef.current.value);
-            setTimeout(() => {
-              applyFilter(selectedFilter, setState);
+            setTimeout(async () => {
+              await applyFilter(selectedFilter, setState);
             }, 100);
           }
         }}>
@@ -191,8 +248,8 @@ function App() {
         </button>
       </div>
 
-      <main>
-        <div className='title'>
+      <main id='main'>
+        <div className='title' id={selectedFilter ?? ""}>
           <h4>{selectedFilter ?? ""}</h4>
           {
             state == States[0] && <Loader />
@@ -206,7 +263,22 @@ function App() {
             src={imgUrl} />
           <img id='result' />
         </section>
+        {info[selectedFilter] && <>
+          <br />
+          <h4>What does it mean?</h4>
+          <br />
+        </>
+        }
+        {
+          info[selectedFilter] && getInfo(selectedFilter)
+        }
       </main>
+
+      {
+        scrollDir == "scrolling down" && <div className='up' onClick={() => {
+          document.getElementById("home").scrollIntoView({ behavior: "smooth" });
+        }}><Up /></div>
+      }
 
       <footer>
         <h4>
@@ -229,8 +301,8 @@ function OptionNames(names, selectedFilter, setSelectedFilter, setState, title) 
           key={filterName}
           className={selectedFilter == filterName ? "filterName selected" : "filterName"}
           onClick={async () => {
+            await applyFilter(filterName, setState, selectedFilter);
             setSelectedFilter(filterName);
-            await applyFilter(filterName, setState);
           }}
         >
           {filterName}
@@ -238,4 +310,12 @@ function OptionNames(names, selectedFilter, setSelectedFilter, setState, title) 
       ))}
     </div>
   );
+}
+
+function getInfo(filterName) {
+  return (
+    <p className="info">
+      {info[filterName].split("\n").map((line, i) => <span key={i}>{line}<br /></span>)}
+    </p>
+  )
 }

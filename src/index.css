@@ -2,6 +2,7 @@
   --bg: black;
   --bgalt: #040608;
   --color: #d0d0d0;
+  --coloralt: #ffffff55;
   --border: #d0d0d044;
 }
 
@@ -28,6 +29,21 @@ nav {
   padding: 2rem 20px;
   background-color: var(--bgalt);
   color: var(--color);
+}
+
+.slide-nav {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: var(--bgalt);
+  color: var(--color);
+  backdrop-filter: blur(14px);
+  background-color: #000000bb;
+  animation: slideDown 0.4s;
 }
 
 main {
@@ -94,7 +110,7 @@ img {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
@@ -140,6 +156,11 @@ img {
   font-size: 0.7rem;
 }
 
+.info {
+  max-width: 600px;
+  color: var(--coloralt);
+}
+
 footer {
   width: 100%;
   padding: 20px;
@@ -153,6 +174,18 @@ a {
   text-decoration: none;
 }
 
+.up {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: var(--color);
+  padding: 10px 12px;
+
+  animation: slideUp 400ms;
+}
+
 @media (max-width: 840px) {
   section {
     flex-direction: column;
@@ -164,7 +197,7 @@ a {
   }
 }
 
-svg {
+#loader {
   max-width: 2rem;
   border-radius: 3px;
   box-shadow: 2px 2px 5px #000;
@@ -183,6 +216,26 @@ use {
 @keyframes a {
   to {
     stroke-dashoffset: 0px
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 
