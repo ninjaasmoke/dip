@@ -10,7 +10,7 @@
   margin: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: 'Product Sans', 'Poppins', sans-serif;
+  font-family: 'Product Sans', 'Kumbh Sans', sans-serif;
 }
 
 html,
@@ -63,7 +63,7 @@ button {
   font-weight: 600;
 }
 
-section {  
+section {
   border-radius: 4px;
   margin: 20px 0;
 
@@ -158,27 +158,33 @@ a {
     flex-direction: column;
     align-items: center;
   }
+
   img {
     margin: 0 0 20px;
   }
 }
 
 svg {
-	max-width: 2rem;
-	border-radius: 3px;
-	box-shadow: 2px 2px 5px #000;
-	background: #000;
-	fill: none;
-	stroke: #333;
-	stroke-linecap: round;
-	stroke-width: 8%
+  max-width: 2rem;
+  border-radius: 3px;
+  box-shadow: 2px 2px 5px #000;
+  background: #000;
+  fill: none;
+  stroke: #333;
+  stroke-linecap: round;
+  stroke-width: 8%
 }
 
 use {
   stroke: #fff;
-	animation: a 2s linear infinite
+  animation: a 2s linear infinite
 }
 
-@keyframes a { to { stroke-dashoffset: 0px } }
+@keyframes a {
+  to {
+    stroke-dashoffset: 0px
+  }
+}
+
 @import url('http://fonts.cdnfonts.com/css/google-sans');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans&display=swap');
