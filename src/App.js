@@ -55,7 +55,7 @@ async function roi(color = 'blue') {
 
 async function mask() {
   let image = await Image.load(document.getElementById('color').src);
-  let yellow = image.grey({ algorithm: 'yellow' });
+  let yellow = image.grey();
   let result = yellow.mask();
   document.getElementById('result').src = result.toDataURL();
 }
@@ -89,6 +89,19 @@ async function invert() {
   document.getElementById('result').src = im.toDataURL();
 }
 
+async function getHistogramData(imgId) {
+  let image = await Image.load(document.getElementById(imgId).src);
+  try {
+    let histogram = image.getHistograms();
+    console.log(histogram);
+    return histogram;
+  } catch (e) {
+    let histogram = image.getHistograms();
+    console.log(histogram);
+    return histogram;
+  }
+}
+
 const map = new Map();
 map.set('Grey Scale', greyFilter);
 map.set('Sobel', sobelFilter);
@@ -110,6 +123,7 @@ function App() {
   const [imgUrl, setImgUrl] = useState("https://www.lactame.com/github/image-js/image-js/3073b80c7d626196cb669f9d617f491a8338ca66/test/img/taxi/original.jpeg");
 
   const [selectedFilter, setSelectedFilter] = useState(filterNames[0]);
+  const [rawData, setRawData] = useState([]);
 
   const inputRef = useRef("");
 
@@ -133,7 +147,11 @@ function App() {
             className={selectedFilter == filterName ? "filterName selected" : "filterName"}
             onClick={() => {
               setSelectedFilter(filterName);
-              applyFilter(filterName);
+              applyFilter(filterName).then(() => {
+                getHistogramData('result').then((histogram) => {
+                  setRawData(histogram);
+                });
+              });
             }}
           >
             {filterName}
