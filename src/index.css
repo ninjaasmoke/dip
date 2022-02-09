@@ -75,6 +75,12 @@ section {
 
 }
 
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 img {
   border-radius: 4px;
   margin-right: 20px;
@@ -119,6 +125,12 @@ img {
   background-color: var(--color);
 }
 
+.error {
+  color: red;
+  padding-left: 4px;
+  font-size: 0.7rem;
+}
+
 footer {
   width: 100%;
   padding: 20px;
@@ -142,3 +154,21 @@ a {
   }
 }
 @import url('http://fonts.cdnfonts.com/css/product-sans');
+
+svg {
+	max-width: 2rem;
+	border-radius: 3px;
+	box-shadow: 2px 2px 5px #000;
+	background: #000;
+	fill: none;
+	stroke: #333;
+	stroke-linecap: round;
+	stroke-width: 8%
+}
+
+use {
+	stroke: #fff;
+	animation: a 2s linear infinite
+}
+
+@keyframes a { to { stroke-dashoffset: 0px } }

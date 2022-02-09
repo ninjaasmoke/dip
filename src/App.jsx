@@ -1,6 +1,9 @@
 import { useLayoutEffect, useState, useRef } from 'react';
 import './App.css';
 import Image from 'image-js';
+import Loader from './Loader';
+
+const States = ["loading", "default", "error"];
 
 function isValidHttpUrl(string) {
   let url;
@@ -16,14 +19,15 @@ function isValidHttpUrl(string) {
 
 const filterNames = [
   'Grey Scale',
-  'Sobel',
+  'Invert',
   'Mask',
   'Region of Interest (Blue)',
   'Region of Interest (Yellow)',
   'Blur',
   'Gaussian Blur',
+  'Sobel',
+  'Sobel Grey',
   'Canny Edge',
-  'Invert',
 ];
 
 async function greyFilter() {
@@ -32,9 +36,11 @@ async function greyFilter() {
   document.getElementById('result').src = im.toDataURL();
 }
 
-async function sobelFilter() {
+async function sobelFilter(grey) {
   let image = await Image.load(document.getElementById('color').src);
-  image = image.grey();
+  if (grey) {
+    image = image.grey();
+  }
   let im = image.sobelFilter();
   document.getElementById('result').src = im.toDataURL();
 }
@@ -105,6 +111,7 @@ async function getHistogramData(imgId) {
 const map = new Map();
 map.set('Grey Scale', greyFilter);
 map.set('Sobel', sobelFilter);
+map.set('Sobel Grey', () => sobelFilter(true));
 map.set('Region of Interest (Blue)', () => roi('blue'));
 map.set('Region of Interest (Yellow)', () => roi('yellow'));
 map.set('Mask', mask);
@@ -113,9 +120,17 @@ map.set('Gaussian Blur', gaussianFilter);
 map.set('Canny Edge', cannyEdgeDetection);
 map.set('Invert', invert);
 
-async function applyFilter(filter) {
-  await map.get(filter)();
-  window.scrollTo(0, document.body.scrollHeight);
+async function applyFilter(filter, setState) {
+  setState(States[0]);
+  try {
+    await map.get(filter)();
+    window.scrollTo(0, document.body.scrollHeight);
+    setState(States[1]);
+  } catch (e) {
+    console.log(e);
+    setState(States[2]);
+  }
+
 }
 
 function App() {
@@ -124,6 +139,7 @@ function App() {
 
   const [selectedFilter, setSelectedFilter] = useState(filterNames[0]);
   const [rawData, setRawData] = useState([]);
+  const [state, setState] = useState(States[1]);
 
   const inputRef = useRef("");
 
@@ -145,13 +161,9 @@ function App() {
           <span
             key={filterName}
             className={selectedFilter == filterName ? "filterName selected" : "filterName"}
-            onClick={() => {
+            onClick={async () => {
               setSelectedFilter(filterName);
-              applyFilter(filterName).then(() => {
-                getHistogramData('result').then((histogram) => {
-                  setRawData(histogram);
-                });
-              });
+              await applyFilter(filterName, setState);
             }}
           >
             {filterName}
@@ -165,7 +177,7 @@ function App() {
           if (isValidHttpUrl(inputRef.current.value)) {
             setImgUrl(inputRef.current.value);
             setTimeout(() => {
-              applyFilter(selectedFilter);
+              applyFilter(selectedFilter, setState);
             }, 100);
           }
         }}>
@@ -174,7 +186,15 @@ function App() {
       </div>
 
       <main>
-        <h4>{selectedFilter ?? ""}</h4>
+        <div className='title'>
+          <h4>{selectedFilter ?? ""}</h4>
+          {
+            state == States[0] && <Loader />
+          }
+          {
+            state == States[2] && <div className="error">(Error)</div>
+          }
+        </div>
         <section>
           <img id="color"
             src={imgUrl} />
