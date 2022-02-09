@@ -17,7 +17,6 @@ html,
 body {
   background-color: var(--bg);
   color: var(--color);
-  font-family: 'Product Sans', sans-serif;  
   scroll-behavior: smooth;
 }
 
@@ -159,7 +158,6 @@ a {
     margin: 0 0 20px;
   }
 }
-@import url('http://fonts.cdnfonts.com/css/product-sans');
 
 svg {
 	max-width: 2rem;
@@ -173,8 +171,9 @@ svg {
 }
 
 use {
-	stroke: #fff;
+  stroke: #fff;
 	animation: a 2s linear infinite
 }
 
 @keyframes a { to { stroke-dashoffset: 0px } }
+@import url('http://fonts.cdnfonts.com/css/google-sans');
