@@ -130,6 +130,10 @@ img {
   background-color: var(--color);
 }
 
+.inputs {
+  margin-top: 20px;
+}
+
 .error {
   color: red;
   padding-left: 4px;
