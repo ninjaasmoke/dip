@@ -42,7 +42,7 @@ nav {
   background-color: var(--bgalt);
   color: var(--color);
   backdrop-filter: blur(6px);
-  background-color: #00000054;
+  background-color: #000000aa;
   animation: slideDown 0.4s;
 }
 
