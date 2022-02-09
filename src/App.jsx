@@ -144,7 +144,7 @@ function App() {
   const inputRef = useRef("");
 
   useLayoutEffect(() => {
-    greyFilter();
+    applyFilter(selectedFilter, setState);
   }, []);
 
 
