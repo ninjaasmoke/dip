@@ -41,8 +41,8 @@ nav {
   padding: 12px 20px;
   background-color: var(--bgalt);
   color: var(--color);
-  backdrop-filter: blur(14px);
-  background-color: #000000bb;
+  backdrop-filter: blur(6px);
+  background-color: #00000054;
   animation: slideDown 0.4s;
 }
 
